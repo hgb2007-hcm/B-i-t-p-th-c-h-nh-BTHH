@@ -1,3 +1,67 @@
 # Tech Lead của Cyber Arena
 
-Phần 1 – Lĩnh vực CNTT và đơn vị lưu trữ1. Chọn ứng viên kỹ thuậtLựa chọn: Mình chọn Ứng viên B (mảng Mạng máy tính / Quản trị hệ thống).Giải thích: Quán Cyber Arena của mình sống nhờ dàn máy chạy ngon và mạng ổn định để khách chơi game với team tập luyện. Lúc máy hỏng hay mạng lag thì cần xử lý ngay lập tức, chứ ứng viên A làm phần mềm đặt lịch thì xài mấy app free hay phần mềm quản lý phòng net có sẵn trên mạng là xong rồi.2. Sắp xếp đơn vị lưu trữ từ nhỏ đến lớn$$\text{Byte} < \text{KB} < \text{MB} < \text{GB} < \text{TB}$$Phần 2 – Mô hình IPO và lĩnh vực CNTT1. Bảng IPO hệ thống quay / xem lại trận đấuThành phầnTrong hệ thống quay/xem lại trận đấuInputHình ảnh và tiếng trực tiếp từ màn hình máy tính lúc tuyển thủ đang chơi.ProcessPhần mềm trên máy tiến hành nén và mã hóa đoạn clip lại.OutputTệp video trận đấu xuất ra (mỗi file nặng tầm 500 MB).StorageỔ cứng SSD 512 GB trên máy dùng để cất mấy file video đó.2. Lĩnh vực CNTT liên quanMạng máy tính và Truyền thông: Để kéo mạng cáp quang cho team chơi game mượt, không bị ping cao và stream thẳng lên YouTube.Hệ thống thông tin / Quản trị hệ thống: Để lo việc cài đặt, bảo trì máy móc và dọn dẹp dung lượng lưu trữ cho quán vận hành trơn tru.Phần 3 – Tính toán dung lượng và tốc độ mạng1. Tính dung lượng ổ cứngTổng dung lượng 20 trận:$$20 \times 500 \text{ MB} = 10.000 \text{ MB}$$Đổi ra GB:$$10.000 \div 1024 \approx 9,77 \text{ GB}$$Đánh giá ổ SSD 512 GB:Ổ 512 GB chứa thoải mái luôn (vì 9,77 GB nhỏ hơn 512 GB rất nhiều).Chạy xong tháng đầu tiên thì máy vẫn còn trống:$$512 - 9,77 = 502,23 \text{ GB}$$2. Tính tốc độ mạngĐổi mạng 100 Mbps ra MB/s:$$100 \div 8 = 12,5 \text{ MB/s}$$Thời gian tối thiểu up clip 200 MB:$$200 \div 12,5 = 16 \text{ giây}$$Sao thực tế lại lâu hơn?Tại vì nhà mạng hay bóp tốc độ upload (tải lên) thấp hơn download (tải về), hoặc lúc đó trong quán đang có nhiều máy khác cùng xài chung đường truyền nên bị chia băng thông.Phần 4 – Phần cứng và mô hình DIKW1. Máy giật lag thì nâng gì?Lựa chọn: Nâng cấp CPU.Giải thích: Vừa gánh game nặng vừa phải nén video stream lên mạng cùng lúc khiến CPU bị quá tải 100%. Khi CPU bị "nghẽn cổ chai" thì máy sẽ giật đùng đùng liền, nên phải ưu tiên lên đời CPU nhiều nhân/luồng hơn để nó xử lý đa nhiệm mượt mà.2. Mô hình DIKW áp vào tình huống thực tếTầngNội dung trong tình huốngVì sao lại xếp vào tầng này? (1 câu)DataTuyển thủ hay nằm xuống ở phút 15–20.Đây chỉ là con số và sự kiện thô chưa qua phân tích hay giải thích gì cả.InformationBị hạ gục ở phút 15–20 là do khu vực đó thiếu tầm nhìn (bản đồ tối thui).Do mình đã ghép dữ liệu vào bối cảnh trận đấu để tìm ra nguyên nhân bị chết.KnowledgeRút ra bài học: Kiểm soát tầm nhìn giữa trận là yếu tố sống còn để không bị bắt lẻ.Vì thông tin đã được đúc kết thành bài học kinh nghiệm thực chiến cho cả team.WisdomHLV quyết định yêu cầu tuyển thủ phải mua thêm mắt (Ward) cho các trận sau.Vì đã từ bài học đó đưa ra quyết định hành động thực tế chuẩn xác nhất.
+Dưới đây là bản tóm tắt ngắn gọn, đúng chất bài làm của sinh viên:
+
+---
+
+## Phần 1 – Lĩnh vực CNTT & Đơn vị lưu trữ
+
+1. **Chọn Ứng viên B** (Mạng / Quản trị hệ thống).
+*Giải thích:* Cyber Arena cần mạng ngon và dàn máy chạy tốt để kinh doanh và cho team tập luyện. Sự cố phần cứng, mạng giật lag cần sửa ngay, còn phần mềm đặt lịch có thể dùng sẵn app ngoài.
+2. **Thứ tự tăng dần:**
+$$\text{Byte} < \text{KB} < \text{MB} < \text{GB} < \text{TB}$$
+
+
+
+---
+
+## Phần 2 – Mô hình IPO & Lĩnh vực CNTT
+
+### 1. Bảng IPO hệ thống quay/xem lại
+
+* **Input:** Hình ảnh, âm thanh trực tiếp từ màn hình máy tính trận đấu.
+* **Process:** Phần mềm mã hóa, nén dữ liệu thành file video.
+* **Output:** File video trận đấu (~500 MB).
+* **Storage:** Ổ cứng SSD 512 GB lưu file video.
+
+### 2. Lĩnh vực CNTT liên quan
+
+* **Mạng máy tính & Truyền thông:** Kéo đường truyền ổn định để chơi game không ping cao và livestream mượt lên YouTube.
+* **Quản trị hệ thống:** Bảo trì máy móc, dọn dẹp dung lượng lưu trữ cho trung tâm vận hành trơn tru.
+
+---
+
+## Phần 3 – Dung lượng & Tốc độ mạng
+
+### 1. Dung lượng lưu trữ
+
+* **Tổng 20 trận:** $20 \times 500 \text{ MB} = 10.000 \text{ MB}$
+* **Đổi sang GB:** $10.000 \div 1024 \approx 9,77 \text{ GB}$
+* **SSD 512 GB:** **Đủ chứa** ($9,77 \text{ GB} < 512 \text{ GB}$). Sau 1 tháng còn trống:
+$$512 - 9,77 = 502,23 \text{ GB}$$
+
+
+
+### 2. Tốc độ mạng
+
+* **100 Mbps đổi ra MB/s:** $100 \div 8 = 12,5 \text{ MB/s}$
+* **Thời gian tối thiểu up clip 200 MB:** $200 \div 12,5 = 16 \text{ giây}$
+* **Lý do thực tế lâu hơn:** Tốc độ upload thực tế thường bị nhà mạng hạ thấp hơn download, hoặc bị chia sẻ băng thông với các máy khác trong quán.
+
+---
+
+## Phần 4 – Phần cứng & Mô hình DIKW
+
+### 1. Nâng cấp linh kiện
+
+* **Chọn:** Nâng **CPU**.
+* *Giải thích:* Vừa chơi game vừa mã hóa livestream khiến CPU quá tải 100% gây giật lag. Cần CPU nhiều nhân/luồng hơn để gánh đa nhiệm mượt mà.
+
+### 2. Mô hình DIKW
+
+| Tầng | Nội dung | Vì sao thuộc tầng này? |
+| --- | --- | --- |
+| **Data** | Tuyển thủ hay chết ở phút 15–20. | Chỉ là con số/sự kiện thô chưa qua xử lý. |
+| **Information** | Chết ở phút 15–20 do thiếu tầm nhìn (máy thiếu mắt). | Dữ liệu thô đã được gắn bối cảnh để tìm ra nguyên nhân. |
+| **Knowledge** | Rút ra kinh nghiệm: Kiểm soát tầm nhìn giữa trận giúp tránh bị bắt lẻ. | Thông tin đúc kết thành bài học chiến thuật. |
+| **Wisdom** | HLV chỉ đạo mua thêm mắt (Ward) cho trận sau. | Áp dụng bài học để đưa ra quyết định hành động thực tế. |
