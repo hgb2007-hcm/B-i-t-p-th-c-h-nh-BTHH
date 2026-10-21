@@ -1,3 +1,64 @@
-# Tech Lead của Cyber Arena
+# Kiến Trúc Hệ Điều Hành & Tư Duy Quản Lý File
 
-Phần 1 – Lĩnh vực CNTT và đơn vị lưu trữ1. Chọn ứng viên kỹ thuậtLựa chọn: Mình chọn Ứng viên B (mảng Mạng máy tính / Quản trị hệ thống).Giải thích: Quán Cyber Arena của mình sống nhờ dàn máy chạy ngon và mạng ổn định để khách chơi game với team tập luyện. Lúc máy hỏng hay mạng lag thì cần xử lý ngay lập tức, chứ ứng viên A làm phần mềm đặt lịch thì xài mấy app free hay phần mềm quản lý phòng net có sẵn trên mạng là xong rồi.2. Sắp xếp đơn vị lưu trữ từ nhỏ đến lớn$$\text{Byte} < \text{KB} < \text{MB} < \text{GB} < \text{TB}$$Phần 2 – Mô hình IPO và lĩnh vực CNTT1. Bảng IPO hệ thống quay / xem lại trận đấuThành phầnTrong hệ thống quay/xem lại trận đấuInputHình ảnh và tiếng trực tiếp từ màn hình máy tính lúc tuyển thủ đang chơi.ProcessPhần mềm trên máy tiến hành nén và mã hóa đoạn clip lại.OutputTệp video trận đấu xuất ra (mỗi file nặng tầm 500 MB).StorageỔ cứng SSD 512 GB trên máy dùng để cất mấy file video đó.2. Lĩnh vực CNTT liên quanMạng máy tính và Truyền thông: Để kéo mạng cáp quang cho team chơi game mượt, không bị ping cao và stream thẳng lên YouTube.Hệ thống thông tin / Quản trị hệ thống: Để lo việc cài đặt, bảo trì máy móc và dọn dẹp dung lượng lưu trữ cho quán vận hành trơn tru.Phần 3 – Tính toán dung lượng và tốc độ mạng1. Tính dung lượng ổ cứngTổng dung lượng 20 trận:$$20 \times 500 \text{ MB} = 10.000 \text{ MB}$$Đổi ra GB:$$10.000 \div 1024 \approx 9,77 \text{ GB}$$Đánh giá ổ SSD 512 GB:Ổ 512 GB chứa thoải mái luôn (vì 9,77 GB nhỏ hơn 512 GB rất nhiều).Chạy xong tháng đầu tiên thì máy vẫn còn trống:$$512 - 9,77 = 502,23 \text{ GB}$$2. Tính tốc độ mạngĐổi mạng 100 Mbps ra MB/s:$$100 \div 8 = 12,5 \text{ MB/s}$$Thời gian tối thiểu up clip 200 MB:$$200 \div 12,5 = 16 \text{ giây}$$Sao thực tế lại lâu hơn?Tại vì nhà mạng hay bóp tốc độ upload (tải lên) thấp hơn download (tải về), hoặc lúc đó trong quán đang có nhiều máy khác cùng xài chung đường truyền nên bị chia băng thông.Phần 4 – Phần cứng và mô hình DIKW1. Máy giật lag thì nâng gì?Lựa chọn: Nâng cấp CPU.Giải thích: Vừa gánh game nặng vừa phải nén video stream lên mạng cùng lúc khiến CPU bị quá tải 100%. Khi CPU bị "nghẽn cổ chai" thì máy sẽ giật đùng đùng liền, nên phải ưu tiên lên đời CPU nhiều nhân/luồng hơn để nó xử lý đa nhiệm mượt mà.2. Mô hình DIKW áp vào tình huống thực tếTầngNội dung trong tình huốngVì sao lại xếp vào tầng này? (1 câu)DataTuyển thủ hay nằm xuống ở phút 15–20.Đây chỉ là con số và sự kiện thô chưa qua phân tích hay giải thích gì cả.InformationBị hạ gục ở phút 15–20 là do khu vực đó thiếu tầm nhìn (bản đồ tối thui).Do mình đã ghép dữ liệu vào bối cảnh trận đấu để tìm ra nguyên nhân bị chết.KnowledgeRút ra bài học: Kiểm soát tầm nhìn giữa trận là yếu tố sống còn để không bị bắt lẻ.Vì thông tin đã được đúc kết thành bài học kinh nghiệm thực chiến cho cả team.WisdomHLV quyết định yêu cầu tuyển thủ phải mua thêm mắt (Ward) cho các trận sau.Vì đã từ bài học đó đưa ra quyết định hành động thực tế chuẩn xác nhất.
+***Phần 1 — Kiến trúc Hệ điều hành***
+
+- ***Chức năng & cơ chế chạy cùng lúc:***
+
+Đây là chức năng Quản lý tiến trình (Process Management) và Quản lý bộ nhớ.
+
+Máy chạy ngon 4 app cùng lúc nhờ CPU chia thời gian xử lý cực nhanh (Time-sharing) và hệ điều hành cấp riêng cho mỗi app một vùng RAM độc lập, không va chạm nhau.
+
+ - ***Xử lý Shell/Kernel:***
+
+Khi click đúp file, Shell sẽ hứng lệnh đầu tiên (dịch hành động click thành lệnh máy) rồi mới gửi cho Kernel.
+
+Mình không thao tác thẳng với Kernel vì Kernel nắm quyền quản lý phần cứng tối cao, chỉ cần người dùng nhấp nhầm một lệnh là crash hệ thống (màn hình xanh) ngay.
+
+***Phần 2 — Cây thư mục & Ổ đĩa***
+
+ ***Xác định các thành phần:***
+
+- Root Directory: D:\
+
+- Parent Directory của anh 1.jpg: Thư mục Hinh anh
+
+- Vai trò file anh 1.jpg: Là Lá (nút cuối cùng, không chứa cái gì khác).
+
+***Nguy cơ lưu dữ liệu ở C:\ (Desktop/Downloads):***
+
+- (1) Ổ C chứa Windows, máy bị lỗi phải cài lại Win là mất sạch bài làm.
+- (2) Desktop dễ bị vỡ phông, lỗi đường dẫn khi nén gửi đi.
+- Nơi lưu đúng: Chuyển hết sang phân vùng dữ liệu D:.
+
+***Phần 3 — Đường dẫn Path***
+
+***Absolute Path:***
+
+D:\Nam1\HocKy1\MonHoc\CongNgheThongTin\BaiTapLon\Session02\BaoCaoCuoiKy\Chuong1\Hinh anh\anh 1.jpg
+
+***Relative Path & lý do dùng:***
+
+- Cú pháp chèn từ report.html: assets/logo.png
+- Lý do không bị lỗi: Đường dẫn tương đối chỉ liên kết các file bên trong thư mục dự án với nhau. Lúc gửi cho thầy, thầy mở ở ổ C, ổ D hay máy Mac thì code vẫn tự tìm đúng file logo.
+
+***Phần 4 — Quy tắc Đặt tên chuẩn***
+
+
+- bao-cao-bai-tap-lon-it101-v2.docx
+
+***Phần 5 — Tổ chức & Dọn dẹp Ổ đĩa***
+
+- Đường dẫn cũ lồng tận 9 cấp thư mục, vi phạm Quy tắc 3 Cấp (quá sâu, rất dễ bị lỗi dài đường dẫn trong Windows).
+
+- Sửa lại đúng chuẩn 4 Trụ Cột (Ổ D:):
+
+D:\01_HocTap\IT101\BaoCao\anh 1.jpg
+
+(Cấp 1: 01_HocTap | Cấp 2: IT101 | Cấp 3: BaoCao)
+
+***Phần 6 — Đuôi file & File ẩn***
+
+**Nhận diện cạm bẫy mã độc:**
+
+- Cạm bẫy: Tên thật của nó là de-thi-dap-an.pdf.exe. Do Win đang ẩn đuôi file nên nó che mất chữ .exe, làm mình tưởng file PDF rồi bấm vào là dính virus/mã độc liền.
+- Cách bật hiện đuôi file: Mở File Explorer $\rightarrow$ chọn tab View $\rightarrow$ tích chọn ô File name extensions. Lúc này đuôi file thật sẽ lộ ra ngay.
